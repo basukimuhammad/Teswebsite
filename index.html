@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AdmudCraft - Portfolio</title>
+
     <!-- Font Modern -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="wght@400;600;700&display=swap">https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- Ikon Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <!-- =================== CSS DIMULAI DI SINI =================== -->
     <style>
         /* =================== VARIABEL & GAYA UMUM =================== */
@@ -29,6 +31,7 @@
             --edit-color: #28a745;
             --sync-color: #17a2b8;
         }
+
         /* --- Tema Gelap --- */
         body.dark-mode {
             --primary-bg: #121212;
@@ -39,14 +42,17 @@
             --accent-color: #4dabf7;
             --edit-color: #20c997;
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         html {
             scroll-behavior: smooth;
         }
+
         body {
             font-family: var(--font-body);
             color: var(--text-primary);
@@ -57,6 +63,7 @@
             /* --- ANTI-COPY CSS --- */
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-touch-callout: none;
         }
+
         /* --- EFEK PARALLAX BACKGROUND --- */
         body::before {
             content: '';
@@ -69,6 +76,7 @@
             z-index: -1;
             transition: background-color 0.3s ease;
         }
+
         /* =================== LOCK BODY SAAT MODAL TERBUKA =================== */
         body.no-scroll {
             overflow: hidden;
@@ -76,17 +84,20 @@
             position: fixed;
             width: 100%;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
             transition: filter 0.3s ease;
         }
+
         /* Efek blur untuk background saat modal terbuka */
         body.modal-open .container {
             filter: blur(2px);
             pointer-events: none;
         }
+
         section {
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
@@ -99,6 +110,7 @@
             transition: background 0.3s ease, filter 0.3s ease;
             position: relative;
         }
+
         h2 {
             font-size: 1.3rem;
             font-weight: 700;
@@ -106,6 +118,7 @@
             text-align: center;
             color: var(--text-primary);
         }
+
         /* =================== TOMBOL ADMIN & SYNC =================== */
         #admin-login-btn {
             position: fixed;
@@ -137,6 +150,7 @@
         #admin-login-btn:hover i {
             color: white;
         }
+
         /* Tombol Sync */
         #sync-button {
             position: fixed;
@@ -174,6 +188,7 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
         /* =================== TOMBOL WHATSAPP =================== */
         #whatsapp-button {
             position: fixed;
@@ -205,6 +220,7 @@
             font-size: 1.5rem;
             color: #25D366;
         }
+
         /* =================== TOMBOL MODE GELAP =================== */
         #theme-toggle {
             position: fixed;
@@ -236,6 +252,7 @@
             transform: rotate(180deg) scale(0);
             position: absolute;
         }
+
         /* =================== PROFIL =================== */
         .profile-section {
             text-align: center;
@@ -251,6 +268,7 @@
             position: relative;
             overflow: hidden;
         }
+
         .profile-img::after {
             content: '';
             position: absolute;
@@ -271,6 +289,7 @@
             pointer-events: none;
             z-index: 1;
         }
+
         body.dark-mode .profile-img::after {
             background: linear-gradient(
                 135deg,
@@ -281,6 +300,7 @@
                 rgba(255, 255, 255, 0) 100%
             );
         }
+
         @keyframes light-reflection {
             0%, 100% {
                 opacity: 0.5;
@@ -297,9 +317,11 @@
                 opacity: 0.8;
             }
         }
+
         .profile-img:hover {
             transform: scale(1.1);
         }
+
         .profile-name {
             font-size: 1.5rem;
             font-weight: 700;
@@ -321,6 +343,7 @@
             color: var(--text-secondary);
             padding: 0 10px;
         }
+
         /* =================== IKON SOSIAL =================== */
         .social-links {
             display: flex;
@@ -348,6 +371,7 @@
             background: rgba(0, 0, 0, 0.05);
             transform: scale(1.1);
         }
+
         /* =================== TOMBOL TOKO =================== */
         .social-links a.toko {
             position: relative;
@@ -356,20 +380,24 @@
             border-radius: 50%;
             overflow: hidden;
         }
+
         .social-links a.toko .shop-icon {
             width: 20px;
             height: 20px;
             fill: var(--text-primary);
             transition: transform 0.3s ease, fill 0.3s ease;
         }
+
         .social-links a.toko:hover .shop-icon {
             transform: scale(1.2);
             fill: white;
         }
+
         .social-links a.toko:hover {
             background: linear-gradient(135deg, #4CAF50 0%, #2196F3 50%, #9C27B0 100%);
             transform: scale(1.1);
         }
+
         /* =================== TOMBOL DONASI =================== */
         .social-links a.donate-btn {
             position: relative;
@@ -378,29 +406,36 @@
             border-radius: 50%;
             overflow: hidden;
         }
+
         .social-links a.donate-btn i {
             color: #ff4757;
             transition: transform 0.3s ease;
         }
+
         .social-links a.donate-btn:hover i {
             transform: scale(1.2);
             color: #ff6b81;
         }
+
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
+
         .social-links a.donate-btn {
             animation: pulse 2s infinite;
         }
+
         .social-links a.donate-btn:hover {
             animation: none;
             background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
         }
+
         .social-links a.donate-btn:hover i {
             color: white;
         }
+
         /* =================== STATISTIK DENGAN FITUR EDIT =================== */
         .stats-grid {
             display: grid;
@@ -443,6 +478,7 @@
         .stat-card.youtube i { color: #FF0000; }
         .stat-card.tiktok i { color: #000000; background: none; padding: 0;}
         .stat-card.views i { color: var(--text-primary); }
+
         /* Tombol edit untuk stats */
         .stat-card .edit-btn {
             position: absolute;
@@ -468,6 +504,7 @@
         .admin-mode .stat-card .edit-btn {
             display: flex;
         }
+
         /* Form edit stats */
         .edit-stats-form {
             display: none;
@@ -543,6 +580,7 @@
             background: #6c757d;
             color: white;
         }
+
         /* =================== STREAM SCHEDULE =================== */
         .schedule-wrapper {
             display: flex;
@@ -550,6 +588,7 @@
             gap: 15px;
             margin-bottom: 20px;
         }
+
         .schedule-container {
             background: rgba(255, 255, 255, 0.5);
             border: 1px solid var(--glass-border);
@@ -559,9 +598,11 @@
             width: 100%;
             overflow: hidden;
         }
+
         body.dark-mode .schedule-container {
             background: rgba(255, 255, 255, 0.05);
         }
+
         .schedule-header {
             display: flex;
             justify-content: space-between;
@@ -570,11 +611,13 @@
             padding-bottom: 10px;
             border-bottom: 1px solid var(--glass-border);
         }
+
         .schedule-title {
             font-size: 1.1rem;
             font-weight: 700;
             color: var(--text-primary);
         }
+
         .schedule-edit-btn {
             background: var(--edit-color);
             color: white;
@@ -596,6 +639,7 @@
         .admin-mode .schedule-edit-btn {
             display: flex;
         }
+
         /* TOMBOL NAVIGASI KIRI-KANAN */
         .nav-buttons {
             display: flex;
@@ -603,6 +647,7 @@
             gap: 10px;
             margin-bottom: 10px;
         }
+
         .nav-button {
             width: 35px;
             height: 35px;
@@ -617,21 +662,25 @@
             transition: all 0.3s ease;
             font-size: 1rem;
         }
+
         .nav-button:hover:not(:disabled) {
             background: var(--accent-color);
             color: white;
             transform: scale(1.1);
         }
+
         .nav-button:disabled {
             opacity: 0.3;
             cursor: not-allowed;
         }
+
         .schedule-horizontal-wrapper {
             position: relative;
             width: 100%;
             overflow: hidden;
             border-radius: 10px;
         }
+
         .schedule-horizontal {
             display: flex;
             overflow-x: auto;
@@ -639,6 +688,7 @@
             padding: 5px;
             scroll-behavior: smooth;
         }
+
         .schedule-day-horizontal {
             flex: 0 0 auto;
             width: calc(100vw - 80px);
@@ -653,19 +703,23 @@
             position: relative;
             overflow: hidden;
         }
+
         .schedule-day-horizontal:hover {
             transform: translateY(-3px);
             background: rgba(255, 255, 255, 0.8);
         }
+
         body.dark-mode .schedule-day-horizontal:hover {
             background: rgba(255, 255, 255, 0.1);
         }
+
         .schedule-day-horizontal h3 {
             font-size: 1rem;
             font-weight: 700;
             margin-bottom: 8px;
             color: var(--text-primary);
         }
+
         .schedule-day-horizontal p {
             font-size: 0.85rem;
             margin-bottom: 8px;
@@ -673,6 +727,7 @@
             min-height: 35px;
             line-height: 1.3;
         }
+
         .schedule-day-horizontal .time {
             font-size: 0.75rem;
             font-weight: 600;
@@ -683,6 +738,7 @@
             display: inline-block;
             margin-top: 8px;
         }
+
         .schedule-day-horizontal .day-badge {
             position: absolute;
             top: 8px;
@@ -694,6 +750,7 @@
             padding: 2px 6px;
             border-radius: 8px;
         }
+
         /* Tombol edit untuk setiap hari */
         .schedule-day-horizontal .edit-day-btn {
             position: absolute;
@@ -719,6 +776,7 @@
         .admin-mode .schedule-day-horizontal .edit-day-btn {
             display: flex;
         }
+
         /* =================== RANK LIST =================== */
         .rank-container {
             background: rgba(255, 255, 255, 0.5);
@@ -728,6 +786,7 @@
             width: 100%;
             position: relative;
         }
+
         .rank-header {
             display: flex;
             justify-content: space-between;
@@ -736,11 +795,13 @@
             padding-bottom: 10px;
             border-bottom: 1px solid var(--glass-border);
         }
+
         .rank-title {
             font-size: 1.1rem;
             font-weight: 700;
             color: var(--text-primary);
         }
+
         .rank-edit-btn {
             background: var(--edit-color);
             color: white;
@@ -762,11 +823,13 @@
         .admin-mode .rank-edit-btn {
             display: flex;
         }
+
         .rank-list {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
+
         .rank-item {
             display: flex;
             align-items: center;
@@ -777,13 +840,16 @@
             transition: transform 0.3s ease, background 0.3s ease;
             position: relative;
         }
+
         .rank-item:hover {
             transform: translateX(3px);
             background: rgba(255, 255, 255, 0.8);
         }
+
         body.dark-mode .rank-item:hover {
             background: rgba(255, 255, 255, 0.1);
         }
+
         /* Tombol edit untuk rank item */
         .rank-item .edit-rank-btn {
             position: absolute;
@@ -809,6 +875,7 @@
         .admin-mode .rank-item .edit-rank-btn {
             display: flex;
         }
+
         .rank-position {
             font-size: 1rem;
             font-weight: 700;
@@ -817,15 +884,19 @@
             align-items: center;
             justify-content: center;
         }
+
         .rank-1 .rank-position {
             color: var(--rank-1);
         }
+
         .rank-2 .rank-position {
             color: var(--rank-2);
         }
+
         .rank-3 .rank-position {
             color: var(--rank-3);
         }
+
         .rank-avatar {
             width: 35px;
             height: 35px;
@@ -834,18 +905,22 @@
             object-fit: cover;
             border: 2px solid var(--glass-border);
         }
+
         .rank-info {
             flex: 1;
         }
+
         .rank-name {
             font-weight: 600;
             font-size: 0.85rem;
             color: var(--text-primary);
         }
+
         .rank-points {
             font-size: 0.75rem;
             color: var(--text-secondary);
         }
+
         /* =================== GALERI FOTO =================== */
         .gallery-header {
             display: flex;
@@ -855,6 +930,7 @@
             padding-bottom: 10px;
             border-bottom: 1px solid var(--glass-border);
         }
+
         .gallery-edit-btn {
             background: var(--edit-color);
             color: white;
@@ -876,6 +952,7 @@
         .admin-mode .gallery-edit-btn {
             display: flex;
         }
+
         .image-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -896,6 +973,7 @@
         .image-grid img:hover {
             transform: scale(1.05);
         }
+
         /* Tombol edit untuk galeri */
         .image-item .edit-image-btn {
             position: absolute;
@@ -921,6 +999,7 @@
         .admin-mode .image-item .edit-image-btn {
             display: flex;
         }
+
         /* =================== MODAL ADMIN LOGIN =================== */
         .admin-login-modal {
             display: none;
@@ -1001,6 +1080,7 @@
         .login-error.active {
             display: block;
         }
+
         /* =================== MODAL POPUP =================== */
         .modal-overlay {
             position: fixed;
@@ -1070,6 +1150,7 @@
             font-size: 0.95rem;
             transition: all 0.3s ease;
         }
+
         /* =================== RESPONSIF =================== */
         @media (min-width: 768px) {
             .stats-grid {
@@ -1088,12 +1169,14 @@
                 gap: 15px;
             }
         }
+
         @media (min-width: 992px) {
             .schedule-wrapper {
                 grid-template-columns: 1fr 350px;
                 gap: 25px;
             }
         }
+
         /* Status Sync */
         .sync-status {
             position: fixed;
@@ -1117,23 +1200,28 @@
     </style>
 </head>
 <body>
+
     <!-- =================== TOMBOL ADMIN LOGIN =================== -->
     <div id="admin-login-btn" title="Admin Login">
         <i class="fas fa-edit"></i>
     </div>
+
     <!-- =================== TOMBOL SYNC =================== -->
     <div id="sync-button" title="Sync Data">
         <i class="fas fa-sync-alt"></i>
     </div>
+
     <!-- =================== TOMBOL WHATSAPP =================== -->
     <a id="whatsapp-button" href="https://wa.me/6287755430203" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
+
     <!-- =================== TOMBOL MODE GELAP =================== -->
     <div id="theme-toggle">
         <i class="fas fa-moon icon" id="moon-icon"></i>
         <i class="fas fa-sun icon hide" id="sun-icon"></i>
     </div>
+
     <!-- =================== MODAL ADMIN LOGIN =================== -->
     <div id="adminLoginModal" class="admin-login-modal">
         <div class="admin-login-content">
@@ -1147,11 +1235,13 @@
             </form>
         </div>
     </div>
+
     <!-- Status Sync -->
     <div id="syncStatus" class="sync-status">
         <i class="fas fa-spinner fa-spin"></i>
         <span>Menyinkronkan data...</span>
     </div>
+
     <div class="container">
         <!-- =================== BAGIAN 1: PROFIL =================== -->
         <section class="profile-section">
@@ -1172,6 +1262,7 @@
                 </a>
             </nav>
         </section>
+
         <!-- =================== BAGIAN 2: STATISTIK =================== -->
         <section>
             <h2>Channel Stats</h2>
@@ -1233,6 +1324,7 @@
                 </form>
             </div>
         </section>
+
         <!-- =================== BAGIAN 3: STREAM SCHEDULE & RANKING =================== -->
         <section>
             <div class="gallery-header">
@@ -1264,6 +1356,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Rank List -->
                 <div class="rank-container">
                     <div class="rank-header">
@@ -1281,6 +1374,7 @@
                 </div>
             </div>
         </section>
+
         <!-- =================== BAGIAN 4: VIDEO =================== -->
         <section>
             <h2>Latest Video</h2>
@@ -1288,6 +1382,7 @@
                 <iframe src="https://www.youtube.com/embed/NaLSra9mv8c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </section>
+
         <section>
             <h2>Latest TikTok</h2>
             <div class="video-container">
@@ -1297,6 +1392,7 @@
                 <script async src="https://www.tiktok.com/embed.js"></script>
             </div>
         </section>
+
         <!-- =================== BAGIAN 5: GALERI FOTO =================== -->
         <section>
             <div class="gallery-header">
@@ -1310,6 +1406,7 @@
                 <!-- Images will be loaded by JavaScript -->
             </div>
         </section>
+
         <!-- =================== BAGIAN 6: JOIN SERVER =================== -->
         <section style="text-align: center;">
             <button id="openModalBtn" class="content-link" style="display: inline-flex; align-items: center; justify-content: center; width: 100%; max-width: 300px; padding: 12px 20px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; color: var(--text-primary); text-decoration: none; font-weight: 600; transition: background 0.3s ease, transform 0.3s ease; cursor: pointer; margin: 0 auto;">
@@ -1318,12 +1415,13 @@
             </button>
         </section>
     </div>
+
     <!-- =================== MODAL POPUP =================== -->
     <div id="joinModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Pilih Platform</h2>
-                <span class="close-modal">×</span>
+                <span class="close-modal">&times;</span>
             </div>
             <div class="modal-body">
                 <div class="modal-links">
@@ -1339,190 +1437,322 @@
             </div>
         </div>
     </div>
+
     <!-- =================== JAVASCRIPT DENGAN GITHUB SYNC =================== -->
-<script>
-/* =======================================================
-   GITHUB GIST CONFIG
-======================================================= */
+    // =================== KONFIGURASI GITHUB (DATABASE) ===================
 const GITHUB_CONFIG = {
-  username: "admud222-svg",
-  gistId: "c8c3c534682e1a05335eac9523680f70",
-  fileName: "admudcraft_data.json"
+    username: 'admud222-svg',
+    gistId: 'c8c3c534682e1a05335eac9523680f70',
+    fileName: 'admudcraft_data.json',
+    token: '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' // Token Anda sudah terpasang
 };
 
-const GIST_API_URL = `https://api.github.com/gists/${GITHUB_CONFIG.gistId}`;
-const GIST_RAW_URL = `https://gist.githubusercontent.com/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.gistId}/raw/${GITHUB_CONFIG.fileName}`;
+// URL untuk mengambil data mentah (Public)
+const GIST_DATA_URL = `https://gist.githubusercontent.com/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.gistId}/raw/${GITHUB_CONFIG.fileName}`;
 
-/* =======================================================
-   GLOBAL
-======================================================= */
+// =================== VARIABEL GLOBAL ===================
 const ADMIN_PASSWORD = "admud123";
 let isAdminMode = false;
 let appData = null;
-let GITHUB_TOKEN = localStorage.getItem("gh_token") || "";
 
-/* =======================================================
-   LOAD FROM CLOUD
-======================================================= */
-async function loadDataFromCloud() {
-  showSyncStatus("Memuat data...");
-  try {
-    const res = await fetch(`${GIST_RAW_URL}?t=${Date.now()}`);
-    if (!res.ok) throw "Cloud Error";
-    appData = await res.json();
-    localStorage.setItem("admudcraft_data", JSON.stringify(appData));
-    renderAll();
-  } catch (e) {
-    const local = localStorage.getItem("admudcraft_data");
-    if (local) {
-      appData = JSON.parse(local);
-      renderAll();
+// =================== INISIALISASI APLIKASI ===================
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('Menghubungkan ke database cloud...');
+    await loadDataFromCloud();
+    setupEventListeners();
+    setupScheduleScroll();
+    
+    // Load tema yang tersimpan
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
     }
-    showNotification("Gagal ambil cloud, pakai data lokal", "error");
-  }
-  hideSyncStatus();
+});
+
+// =================== FUNGSI CLOUD (BACA & TULIS) ===================
+
+// 1. Mengambil data terbaru dari GitHub Gist
+async function loadDataFromCloud() {
+    showSyncStatus('Mengambil data terbaru...');
+    try {
+        const response = await fetch(`${GIST_DATA_URL}?t=${Date.now()}`);
+        if (response.ok) {
+            appData = await response.json();
+            console.log('Data Cloud berhasil dimuat:', appData);
+            localStorage.setItem('admudcraft_data', JSON.stringify(appData));
+            renderAll();
+            hideSyncStatus();
+            return;
+        }
+    } catch (error) {
+        console.error('Gagal mengambil data dari Cloud:', error);
+    }
+
+    // Jika internet gagal, gunakan data lokal (Cache)
+    const local = localStorage.getItem('admudcraft_data');
+    if (local) {
+        appData = JSON.parse(local);
+        renderAll();
+        showNotification('Menggunakan data offline', 'info');
+    }
+    hideSyncStatus();
 }
 
-/* =======================================================
-   SAVE TO CLOUD
-======================================================= */
+// 2. Menyimpan data yang diedit kembali ke GitHub Gist (Agar Publik Bisa Lihat)
 async function saveData() {
-  if (!appData) return;
+    if (!appData) return;
+    
+    // Simpan ke LocalStorage dulu agar perubahan instan di layar sendiri
+    localStorage.setItem('admudcraft_data', JSON.stringify(appData));
+    renderAll(); 
 
-  localStorage.setItem("admudcraft_data", JSON.stringify(appData));
+    showSyncStatus('Menyimpan ke Cloud agar publik bisa melihat...');
+    
+    try {
+        const response = await fetch(`https://api.github.com/gists/${GITHUB_CONFIG.gistId}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `token ${GITHUB_CONFIG.token}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                files: {
+                    [GITHUB_CONFIG.fileName]: {
+                        content: JSON.stringify(appData, null, 2)
+                    }
+                }
+            })
+        });
 
-  if (!isAdminMode) return;
-
-  if (!GITHUB_TOKEN) {
-    const t = prompt("Masukkan GitHub Token:");
-    if (!t) return alert("Token dibutuhkan");
-    GITHUB_TOKEN = t;
-    localStorage.setItem("gh_token", t);
-  }
-
-  showSyncStatus("Sync ke Cloud...");
-  try {
-    const res = await fetch(GIST_API_URL, {
-      method: "PATCH",
-      headers: {
-        "Authorization": "token " + GITHUB_TOKEN,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        files: {
-          [GITHUB_CONFIG.fileName]: {
-            content: JSON.stringify(appData, null, 2)
-          }
+        if (response.ok) {
+            showNotification('Berhasil! Perubahan sekarang LIVE untuk semua orang.', 'success');
+        } else {
+            showNotification('Gagal simpan ke Cloud. Cek status token.', 'error');
         }
-      })
+    } catch (e) {
+        console.error('Error saat menyimpan:', e);
+        showNotification('Kesalahan koneksi internet.', 'error');
+    }
+    hideSyncStatus();
+}
+
+// =================== LOGIKA EDIT & ADMIN ===================
+
+function setupEventListeners() {
+    // Admin Login Click
+    document.getElementById('admin-login-btn').addEventListener('click', () => {
+        if (isAdminMode) {
+            logoutAdmin();
+        } else {
+            document.getElementById('adminLoginModal').style.display = 'flex';
+        }
     });
 
-    if (!res.ok) throw "Gagal sync";
-    showNotification("Tersimpan ke Cloud!", "success");
-  } catch (e) {
-    showNotification("Gagal simpan ke Cloud", "error");
-  }
-  hideSyncStatus();
+    // Form Login Admin
+    document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const inputPass = document.getElementById('adminPassword').value;
+        if (inputPass === ADMIN_PASSWORD) {
+            loginAdmin();
+            document.getElementById('adminLoginModal').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        } else {
+            document.getElementById('loginError').textContent = 'Password salah!';
+            document.getElementById('loginError').style.display = 'block';
+        }
+    });
+
+    // Edit Stats Submit
+    document.getElementById('statsForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        appData.stats.subscribers = parseInt(document.getElementById('editSubscribers').value) || 0;
+        appData.stats.followers = parseInt(document.getElementById('editFollowers').value) || 0;
+        appData.stats.totalViews = parseInt(document.getElementById('editTotalViews').value) || 0;
+        await saveData();
+        document.getElementById('editStatsForm').style.display = 'none';
+    });
+
+    document.getElementById('editStatsBtn').addEventListener('click', () => {
+        document.getElementById('editSubscribers').value = appData.stats.subscribers;
+        document.getElementById('editFollowers').value = appData.stats.followers;
+        document.getElementById('editTotalViews').value = appData.stats.totalViews;
+        document.getElementById('editStatsForm').style.display = 'block';
+    });
+
+    document.getElementById('cancelStatsEdit').addEventListener('click', () => {
+        document.getElementById('editStatsForm').style.display = 'none';
+    });
+
+    // Delegasi Klik untuk Tombol Edit di Jadwal, Rank, dan Galeri
+    document.addEventListener('click', async (e) => {
+        if (!isAdminMode) return;
+
+        // Edit Jadwal
+        const dayBtn = e.target.closest('.edit-day-btn');
+        if (dayBtn) {
+            const idx = dayBtn.dataset.index;
+            const item = appData.schedule[idx];
+            const act = prompt("Ganti Aktivitas:", item.activity);
+            const time = prompt("Ganti Waktu (WIB):", item.time);
+            if (act !== null && time !== null) {
+                appData.schedule[idx].activity = act;
+                appData.schedule[idx].time = time;
+                await saveData();
+            }
+        }
+
+        // Edit Rank
+        const rankBtn = e.target.closest('.edit-rank-btn');
+        if (rankBtn) {
+            const idx = rankBtn.dataset.index;
+            const member = appData.rank[idx];
+            const name = prompt("Nama Member:", member.name);
+            const points = prompt("Poin Member:", member.points);
+            if (name && points) {
+                appData.rank[idx].name = name;
+                appData.rank[idx].points = parseInt(points);
+                await saveData();
+            }
+        }
+
+        // Edit Galeri Gambar
+        const imgBtn = e.target.closest('.edit-image-btn');
+        if (imgBtn) {
+            const idx = imgBtn.dataset.index;
+            const newUrl = prompt("Masukkan URL Gambar Baru:", appData.gallery[idx].src);
+            if (newUrl) {
+                appData.gallery[idx].src = newUrl;
+                await saveData();
+            }
+        }
+    });
+
+    // Sync Button Manual
+    document.getElementById('sync-button').addEventListener('click', async () => {
+        await loadDataFromCloud();
+        showNotification('Data disinkronkan', 'info');
+    });
+
+    // Tema Toggle
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    });
+
+    // Modal Community
+    document.getElementById('openModalBtn').onclick = () => document.getElementById('joinModal').style.display = 'flex';
+    document.querySelector('.close-modal').onclick = () => document.getElementById('joinModal').style.display = 'none';
 }
 
-/* =======================================================
-   RENDER
-======================================================= */
+// =================== FUNGSI RENDER TAMPILAN ===================
+
 function renderAll() {
-  renderStats();
-  renderSchedule();
-  renderGallery();
-  renderRankList();
+    if (!appData) return;
+    renderStats();
+    renderSchedule();
+    renderRankList();
+    renderGallery();
+    
+    // Pastikan tombol edit terlihat jika mode admin aktif
+    if (isAdminMode) {
+        document.querySelectorAll('.edit-btn, .edit-day-btn, .edit-image-btn, .edit-rank-btn, .gallery-edit-btn, .rank-edit-btn, #editStatsBtn')
+                .forEach(btn => btn.style.display = 'flex');
+    }
 }
 
 function renderStats() {
-  subscribers.innerText = appData.stats.subscribers;
-  followers.innerText = appData.stats.followers;
-  totalViews.innerText = appData.stats.totalViews;
+    document.getElementById('subscribers').textContent = formatNumber(appData.stats.subscribers);
+    document.getElementById('followers').textContent = formatNumber(appData.stats.followers);
+    document.getElementById('total-views').textContent = formatNumber(appData.stats.totalViews);
 }
 
 function renderSchedule() {
-  scheduleHorizontal.innerHTML = appData.schedule.map((d, i) => `
-    <div class="schedule-day-horizontal">
-      ${isAdminMode ? `<button onclick="editSchedule(${i})">✎</button>` : ""}
-      <div>${d.day}</div>
-      <p>${d.activity}</p>
-      <span>${d.time}</span>
-    </div>
-  `).join("");
-}
-
-function renderGallery() {
-  imageGrid.innerHTML = appData.gallery.map((g,i)=>`
-    <div>
-      ${isAdminMode ? `<button onclick="editGallery(${i})">✎</button>`:""}
-      <img src="${g.src}">
-    </div>
-  `).join("");
+    const container = document.getElementById('schedule-horizontal');
+    container.innerHTML = appData.schedule.map((day, i) => `
+        <div class="schedule-day-horizontal">
+            <button class="edit-day-btn" data-index="${i}" style="display:${isAdminMode ? 'flex':'none'}"><i class="fas fa-edit"></i></button>
+            <div class="day-badge">${day.badge}</div>
+            <h3>${day.day}</h3>
+            <p>${day.activity}</p>
+            <span class="time">${day.time}</span>
+        </div>
+    `).join('');
 }
 
 function renderRankList() {
-  rankList.innerHTML = appData.rank.map((r,i)=>`
-    <div>
-      ${isAdminMode ? `<button onclick="editRank(${i})">✎</button>`:""}
-      ${r.name} - ${r.points}
-    </div>
-  `).join("");
+    const container = document.getElementById('rank-list');
+    container.innerHTML = appData.rank.map((m, i) => `
+        <div class="rank-item rank-${m.rank}">
+            <button class="edit-rank-btn" data-index="${i}" style="display:${isAdminMode ? 'flex':'none'}"><i class="fas fa-edit"></i></button>
+            <div class="rank-position">${m.rank}</div>
+            <img src="${m.avatar}" class="rank-avatar">
+            <div class="rank-info">
+                <div class="rank-name">${m.name}</div>
+                <div class="rank-points"><i class="fas fa-star"></i> ${m.points.toLocaleString()} points</div>
+            </div>
+        </div>
+    `).join('');
 }
 
-/* =======================================================
-   EDITORS
-======================================================= */
-window.editSchedule = i => {
-  const a = prompt("Activity", appData.schedule[i].activity);
-  const t = prompt("Time", appData.schedule[i].time);
-  if(a && t){
-    appData.schedule[i].activity=a;
-    appData.schedule[i].time=t;
-    renderSchedule();
-    saveData();
-  }
-};
+function renderGallery() {
+    const container = document.getElementById('imageGrid');
+    container.innerHTML = appData.gallery.map((img, i) => `
+        <div class="image-item">
+            <button class="edit-image-btn" data-index="${i}" style="display:${isAdminMode ? 'flex':'none'}"><i class="fas fa-edit"></i></button>
+            <img src="${img.src}" loading="lazy">
+        </div>
+    `).join('');
+}
 
-window.editGallery = i => {
-  const s = prompt("Image URL", appData.gallery[i].src);
-  if(s){
-    appData.gallery[i].src=s;
-    renderGallery();
-    saveData();
-  }
-};
+// =================== FUNGSI PEMBANTU (HELPERS) ===================
 
-window.editRank = i => {
-  const n = prompt("Name", appData.rank[i].name);
-  const p = prompt("Points", appData.rank[i].points);
-  if(n && p){
-    appData.rank[i].name=n;
-    appData.rank[i].points=parseInt(p);
-    renderRankList();
-    saveData();
-  }
-};
-
-/* =======================================================
-   ADMIN
-======================================================= */
 function loginAdmin() {
-  isAdminMode = true;
-  renderAll();
-  alert("Admin Mode Aktif");
-}
-function logoutAdmin(){
-  isAdminMode=false;
-  renderAll();
+    isAdminMode = true;
+    document.body.classList.add('admin-mode');
+    document.getElementById('admin-login-btn').innerHTML = '<i class="fas fa-sign-out-alt"></i>';
+    renderAll();
+    showNotification('Mode Admin Aktif', 'success');
 }
 
-/* =======================================================
-   INIT
-======================================================= */
-document.addEventListener("DOMContentLoaded", ()=>{
-  loadDataFromCloud();
-});
-</script>
+function logoutAdmin() {
+    isAdminMode = false;
+    document.body.classList.remove('admin-mode');
+    document.getElementById('admin-login-btn').innerHTML = '<i class="fas fa-edit"></i>';
+    renderAll();
+    showNotification('Keluar dari mode admin', 'info');
+}
+
+function formatNumber(num) {
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+    return num.toString();
+}
+
+function showNotification(msg, type) {
+    const note = document.createElement('div');
+    note.className = `notification ${type}`;
+    note.style.cssText = `position:fixed; bottom:20px; left:20px; background:${type==='success'?'#28a745':'#17a2b8'}; color:white; padding:15px; border-radius:10px; z-index:9999; animation:fadeIn 0.3s;`;
+    note.textContent = msg;
+    document.body.appendChild(note);
+    setTimeout(() => note.remove(), 3000);
+}
+
+function showSyncStatus(msg) {
+    const s = document.getElementById('syncStatus');
+    s.querySelector('span').textContent = msg;
+    s.classList.add('show');
+}
+
+function hideSyncStatus() {
+    document.getElementById('syncStatus').classList.remove('show');
+}
+
+function setupScheduleScroll() {
+    const sh = document.getElementById('schedule-horizontal');
+    document.getElementById('prev-btn').onclick = () => sh.scrollBy({left: -250, behavior: 'smooth'});
+    document.getElementById('next-btn').onclick = () => sh.scrollBy({left: 250, behavior: 'smooth'});
+}
+
+    </script>
 </body>
 </html>
