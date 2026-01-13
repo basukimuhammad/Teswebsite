@@ -1442,8 +1442,8 @@
     <script>
     // =================== KONFIGURASI GITHUB (DATABASE) ===================
 const GITHUB_CONFIG = {
-    username: 'admud222-svg',
-    gistId: 'c8c3c534682e1a05335eac9523680f70',
+    username: 'basukimuhammad',
+    gistId: '885a6ed4b6771b930b9eb1787da6e3bf',
     fileName: 'admudcraft_data.json',
     token: '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' // Token Anda sudah terpasang
 };
@@ -1499,17 +1499,18 @@ async function loadDataFromCloud() {
 }
 
 // 2. Menyimpan data yang diedit kembali ke GitHub Gist (Agar Publik Bisa Lihat)
+// =================== Menyimpan data yang diedit kembali ke GitHub Gist (Agar Publik Bisa Lihat)
 async function saveData() {
     if (!appData) return;
-    
+
     // Simpan ke LocalStorage dulu agar perubahan instan di layar sendiri
     localStorage.setItem('admudcraft_data', JSON.stringify(appData));
-    renderAll(); 
+    renderAll();
 
-    showSyncStatus('Menyimpan ke Cloud agar publik bisa melihat...');
-    
+    showSyncStatus('Menyimpan ke Cloud...');
+
     try {
-        const response = await fetch(`https://api.github.com/gists/${GITHUB_CONFIG.gistId}`, {
+        const patchResp = await fetch(`https://api.github.com/gists/${GITHUB_CONFIG.gistId}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `token ${GITHUB_CONFIG.token}`,
@@ -1525,16 +1526,41 @@ async function saveData() {
             })
         });
 
-        if (response.ok) {
-            showNotification('Berhasil! Perubahan sekarang LIVE untuk semua orang.', 'success');
-        } else {
-            showNotification('Gagal simpan ke Cloud. Cek status token.', 'error');
+        const patchBody = await patchResp.json().catch(()=>null);
+        console.log('Gist PATCH response:', patchResp.status, patchBody);
+
+        if (!patchResp.ok) {
+            // Tampilkan pesan error lebih detil
+            showNotification('Gagal simpan ke Cloud. Cek token atau cek console.', 'error');
+            console.error('Gist PATCH gagal:', patchResp.status, patchBody);
+            hideSyncStatus();
+            return;
         }
+
+        // Jika sukses, ambil ulang data mentah (raw) dari Gist untuk memastikan sinkron
+        try {
+            const rawResp = await fetch(`${GIST_DATA_URL}?t=${Date.now()}`);
+            if (rawResp.ok) {
+                const latest = await rawResp.json();
+                appData = latest;
+                localStorage.setItem('admudcraft_data', JSON.stringify(appData));
+                renderAll();
+                showNotification('Berhasil! Perubahan sekarang LIVE untuk semua orang.', 'success');
+            } else {
+                console.warn('Gagal fetch raw setelah PATCH:', rawResp.status);
+                showNotification('Perubahan tersimpan tetapi verifikasi cloud gagal.', 'info');
+            }
+        } catch (e) {
+            console.warn('Error mengambil raw setelah PATCH:', e);
+            showNotification('Perubahan tersimpan, namun tidak bisa verifikasi cloud sekarang.', 'info');
+        }
+
     } catch (e) {
-        console.error('Error saat menyimpan:', e);
+        console.error('Error saat menyimpan ke GitHub:', e);
         showNotification('Kesalahan koneksi internet.', 'error');
+    } finally {
+        hideSyncStatus();
     }
-    hideSyncStatus();
 }
 
 // =================== LOGIKA EDIT & ADMIN ===================
