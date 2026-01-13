@@ -1341,286 +1341,188 @@
     </div>
     <!-- =================== JAVASCRIPT DENGAN GITHUB SYNC =================== -->
 <script>
-    // =================== 1. KONFIGURASI GITHUB GIST ===================
-    const GITHUB_CONFIG = {
-        username: 'admud222-svg',
-        gistId: 'c8c3c534682e1a05335eac9523680f70',
-        fileName: 'admudcraft_data.json'
-    };
+/* =======================================================
+   GITHUB GIST CONFIG
+======================================================= */
+const GITHUB_CONFIG = {
+  username: "admud222-svg",
+  gistId: "c8c3c534682e1a05335eac9523680f70",
+  fileName: "admudcraft_data.json"
+};
 
-    const GIST_API_URL = `https://api.github.com/gists/${GITHUB_CONFIG.gistId}`;
-    const GIST_RAW_URL = `https://gist.githubusercontent.com/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.gistId}/raw/${GITHUB_CONFIG.fileName}`;
+const GIST_API_URL = `https://api.github.com/gists/${GITHUB_CONFIG.gistId}`;
+const GIST_RAW_URL = `https://gist.githubusercontent.com/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.gistId}/raw/${GITHUB_CONFIG.fileName}`;
 
-    // =================== 2. VARIABEL GLOBAL ===================
-    const ADMIN_PASSWORD = "admud123"; 
-    let isAdminMode = false;
-    let appData = null;
-    let GITHUB_TOKEN = localStorage.getItem('gh_token') || ""; 
+/* =======================================================
+   GLOBAL
+======================================================= */
+const ADMIN_PASSWORD = "admud123";
+let isAdminMode = false;
+let appData = null;
+let GITHUB_TOKEN = localStorage.getItem("gh_token") || "";
 
-    // =================== 3. FUNGSI LOAD DATA (DENGAN ANTI-CACHE) ===================
-    async function loadDataFromCloud() {
-        showSyncStatus('Memuat data terbaru...');
-        try {
-            const response = await fetch(`${GIST_RAW_URL}?t=${Date.now()}`);
-            if (response.ok) {
-                appData = await response.json();
-                renderAll();
-                hideSyncStatus();
-                console.log("Data berhasil dimuat dari GitHub Cloud");
-            } else {
-                throw new Error("Gagal mengambil data");
-            }
-        } catch (error) {
-            console.error(error);
-            showNotification('Gagal mengambil data Cloud, memakai data lokal', 'error');
-            const local = localStorage.getItem('admudcraft_data');
-            if (local) appData = JSON.parse(local);
-            renderAll();
-            hideSyncStatus();
+/* =======================================================
+   LOAD FROM CLOUD
+======================================================= */
+async function loadDataFromCloud() {
+  showSyncStatus("Memuat data...");
+  try {
+    const res = await fetch(`${GIST_RAW_URL}?t=${Date.now()}`);
+    if (!res.ok) throw "Cloud Error";
+    appData = await res.json();
+    localStorage.setItem("admudcraft_data", JSON.stringify(appData));
+    renderAll();
+  } catch (e) {
+    const local = localStorage.getItem("admudcraft_data");
+    if (local) {
+      appData = JSON.parse(local);
+      renderAll();
+    }
+    showNotification("Gagal ambil cloud, pakai data lokal", "error");
+  }
+  hideSyncStatus();
+}
+
+/* =======================================================
+   SAVE TO CLOUD
+======================================================= */
+async function saveData() {
+  if (!appData) return;
+
+  localStorage.setItem("admudcraft_data", JSON.stringify(appData));
+
+  if (!isAdminMode) return;
+
+  if (!GITHUB_TOKEN) {
+    const t = prompt("Masukkan GitHub Token:");
+    if (!t) return alert("Token dibutuhkan");
+    GITHUB_TOKEN = t;
+    localStorage.setItem("gh_token", t);
+  }
+
+  showSyncStatus("Sync ke Cloud...");
+  try {
+    const res = await fetch(GIST_API_URL, {
+      method: "PATCH",
+      headers: {
+        "Authorization": "token " + GITHUB_TOKEN,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        files: {
+          [GITHUB_CONFIG.fileName]: {
+            content: JSON.stringify(appData, null, 2)
+          }
         }
-    }
-
-    // =================== 4. FUNGSI SIMPAN DATA KE CLOUD ===================
-    async function saveData() {
-        if (!appData) return;
-
-        // Simpan ke Local dulu
-        localStorage.setItem('admudcraft_data', JSON.stringify(appData));
-
-        if (isAdminMode) {
-            if (!GITHUB_TOKEN) {
-                const tokenInput = prompt("Masukkan GitHub Token untuk simpan permanen ke Cloud:");
-                if (tokenInput) {
-                    GITHUB_TOKEN = tokenInput;
-                    localStorage.setItem('gh_token', tokenInput);
-                } else {
-                    showNotification('Gagal: Token diperlukan!', 'error');
-                    return;
-                }
-            }
-
-            showSyncStatus('Menyimpan ke Cloud...');
-            try {
-                const response = await fetch(GIST_API_URL, {
-                    method: 'PATCH',
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        files: { [GITHUB_CONFIG.fileName]: { content: JSON.stringify(appData, null, 2) } }
-                    })
-                });
-
-                if (response.ok) {
-                    showNotification('Berhasil disimpan ke Cloud!', 'success');
-                } else {
-                    throw new Error("Token salah atau Gist ID tidak ditemukan");
-                }
-            } catch (error) {
-                showNotification('Gagal Cloud: ' + error.message, 'error');
-            } finally {
-                hideSyncStatus();
-            }
-        }
-    }
-
-    // =================== 5. RENDER FUNCTIONS ===================
-    function renderAll() {
-        if (!appData) return;
-        renderStats();
-        renderSchedule();
-        renderGallery();
-        renderRankList();
-        
-        // Tampilkan/Sembunyikan tombol edit utama
-        document.getElementById('editStatsBtn').style.display = isAdminMode ? 'flex' : 'none';
-    }
-
-    function renderStats() {
-        document.getElementById('subscribers').textContent = formatNumber(appData.stats.subscribers);
-        document.getElementById('followers').textContent = formatNumber(appData.stats.followers);
-        document.getElementById('total-views').textContent = formatNumber(appData.stats.totalViews);
-    }
-
-    function renderSchedule() {
-        const container = document.getElementById('schedule-horizontal');
-        container.innerHTML = appData.schedule.map((day, index) => `
-            <div class="schedule-day-horizontal">
-                ${isAdminMode ? `<button class="edit-day-btn" onclick="editScheduleDay(${index})" style="display:flex"><i class="fas fa-edit"></i></button>` : ''}
-                <div class="day-badge">${day.badge}</div>
-                <h3>${day.day}</h3>
-                <p>${day.activity}</p>
-                <span class="time">${day.time}</span>
-            </div>
-        `).join('');
-        // Panggil scroll lagi agar tombol navigasi tetap kenal elemennya
-        setupScheduleScroll();
-    }
-
-    window.editScheduleDay = function(index) {
-        const act = prompt("Kegiatan:", appData.schedule[index].activity);
-        const time = prompt("Jam:", appData.schedule[index].time);
-        if (act !== null && time !== null) {
-            appData.schedule[index].activity = act;
-            appData.schedule[index].time = time;
-            renderSchedule();
-            saveData();
-        }
-    }
-
-    function renderGallery() {
-        const container = document.getElementById('imageGrid');
-        container.innerHTML = appData.gallery.map((img, index) => `
-            <div class="image-item">
-                ${isAdminMode ? `<button class="edit-image-btn" onclick="editGallery(${index})" style="display:flex"><i class="fas fa-edit"></i></button>` : ''}
-                <img src="${img.src}" alt="${img.alt}">
-            </div>
-        `).join('');
-    }
-
-    window.editGallery = function(index) {
-        const newSrc = prompt("Masukkan Link Gambar Baru:", appData.gallery[index].src);
-        if (newSrc) {
-            appData.gallery[index].src = newSrc;
-            renderGallery();
-            saveData();
-        }
-    }
-
-    function renderRankList() {
-        const container = document.getElementById('rank-list');
-        container.innerHTML = appData.rank.map((member, index) => `
-            <div class="rank-item rank-${member.rank}">
-                ${isAdminMode ? `<button class="edit-rank-btn" onclick="editRank(${index})" style="display:flex"><i class="fas fa-edit"></i></button>` : ''}
-                <div class="rank-position">${member.rank}</div>
-                <img src="${member.avatar}" alt="${member.name}" class="rank-avatar">
-                <div class="rank-info">
-                    <div class="rank-name">${member.name}</div>
-                    <div class="rank-points"><i class="fas fa-star"></i> ${member.points.toLocaleString()} points</div>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    window.editRank = function(index) {
-        const name = prompt("Nama Member:", appData.rank[index].name);
-        const points = prompt("Points:", appData.rank[index].points);
-        if (name && points) {
-            appData.rank[index].name = name;
-            appData.rank[index].points = parseInt(points);
-            renderRankList();
-            saveData();
-        }
-    }
-
-    // =================== 6. ADMIN LOGIC ===================
-    function loginAdmin() {
-        isAdminMode = true;
-        document.body.classList.add('admin-mode');
-        document.getElementById('admin-login-btn').innerHTML = '<i class="fas fa-sign-out-alt"></i>';
-        renderAll(); 
-        showNotification('Admin mode aktif', 'success');
-    }
-
-    function logoutAdmin() {
-        isAdminMode = false;
-        document.body.classList.remove('admin-mode');
-        document.getElementById('admin-login-btn').innerHTML = '<i class="fas fa-edit"></i>';
-        renderAll();
-        showNotification('Admin mode nonaktif', 'info');
-    }
-
-    // =================== 7. UI HELPERS ===================
-    function formatNumber(num) {
-        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-        if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-        return num.toString();
-    }
-
-    function showSyncStatus(msg) {
-        const el = document.getElementById('syncStatus');
-        if(el) { el.querySelector('span').innerText = msg; el.classList.add('show'); }
-    }
-
-    function hideSyncStatus() {
-        const el = document.getElementById('syncStatus');
-        if(el) el.classList.remove('show');
-    }
-
-    function showNotification(msg, type) {
-        alert(msg); // Bisa diganti dengan sistem toast jika mau lebih keren
-    }
-
-    function setupScheduleScroll() {
-        const scheduleHorizontal = document.getElementById('schedule-horizontal');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        if (!scheduleHorizontal || !prevBtn || !nextBtn) return;
-        const cardWidth = 250;
-        const gap = 10;
-        prevBtn.onclick = () => scheduleHorizontal.scrollBy({ left: -(cardWidth + gap), behavior: 'smooth' });
-        nextBtn.onclick = () => scheduleHorizontal.scrollBy({ left: (cardWidth + gap), behavior: 'smooth' });
-    }
-
-    // =================== 8. INITIALIZATION ===================
-    document.addEventListener('DOMContentLoaded', () => {
-        loadDataFromCloud();
-        
-        // Admin Login
-        document.getElementById('admin-login-btn').onclick = () => {
-            if (!isAdminMode) document.getElementById('adminLoginModal').style.display = 'flex';
-            else logoutAdmin();
-        };
-
-        document.getElementById('adminLoginForm').onsubmit = (e) => {
-            e.preventDefault();
-            if (document.getElementById('adminPassword').value === ADMIN_PASSWORD) {
-                loginAdmin();
-                document.getElementById('adminLoginModal').style.display = 'none';
-                document.getElementById('adminPassword').value = '';
-            } else {
-                alert("Password Salah!");
-            }
-        };
-
-        // Simpan Stats Form
-        document.getElementById('statsForm').onsubmit = async (e) => {
-            e.preventDefault();
-            appData.stats.subscribers = parseInt(document.getElementById('editSubscribers').value);
-            appData.stats.followers = parseInt(document.getElementById('editFollowers').value);
-            appData.stats.totalViews = parseInt(document.getElementById('editTotalViews').value);
-            renderStats();
-            await saveData();
-            document.getElementById('editStatsForm').style.display = 'none';
-        };
-
-        document.getElementById('cancelStatsEdit').onclick = () => {
-            document.getElementById('editStatsForm').style.display = 'none';
-        };
-
-        document.getElementById('sync-button').onclick = loadDataFromCloud;
-
-        // Theme Toggle
-        const themeBtn = document.getElementById('theme-toggle');
-        if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
-        themeBtn.onclick = () => {
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-        };
-
-        // Join Modal
-        document.getElementById('openModalBtn').onclick = () => document.getElementById('joinModal').style.display = 'flex';
-        document.querySelector('.close-modal').onclick = () => document.getElementById('joinModal').style.display = 'none';
+      })
     });
 
-    // =================== 9. ANTI-COPY (PALING BAWAH) ===================
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.onkeydown = function(e) {
-        if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
-            return false;
-        }
-    };
+    if (!res.ok) throw "Gagal sync";
+    showNotification("Tersimpan ke Cloud!", "success");
+  } catch (e) {
+    showNotification("Gagal simpan ke Cloud", "error");
+  }
+  hideSyncStatus();
+}
+
+/* =======================================================
+   RENDER
+======================================================= */
+function renderAll() {
+  renderStats();
+  renderSchedule();
+  renderGallery();
+  renderRankList();
+}
+
+function renderStats() {
+  subscribers.innerText = appData.stats.subscribers;
+  followers.innerText = appData.stats.followers;
+  totalViews.innerText = appData.stats.totalViews;
+}
+
+function renderSchedule() {
+  scheduleHorizontal.innerHTML = appData.schedule.map((d, i) => `
+    <div class="schedule-day-horizontal">
+      ${isAdminMode ? `<button onclick="editSchedule(${i})">✎</button>` : ""}
+      <div>${d.day}</div>
+      <p>${d.activity}</p>
+      <span>${d.time}</span>
+    </div>
+  `).join("");
+}
+
+function renderGallery() {
+  imageGrid.innerHTML = appData.gallery.map((g,i)=>`
+    <div>
+      ${isAdminMode ? `<button onclick="editGallery(${i})">✎</button>`:""}
+      <img src="${g.src}">
+    </div>
+  `).join("");
+}
+
+function renderRankList() {
+  rankList.innerHTML = appData.rank.map((r,i)=>`
+    <div>
+      ${isAdminMode ? `<button onclick="editRank(${i})">✎</button>`:""}
+      ${r.name} - ${r.points}
+    </div>
+  `).join("");
+}
+
+/* =======================================================
+   EDITORS
+======================================================= */
+window.editSchedule = i => {
+  const a = prompt("Activity", appData.schedule[i].activity);
+  const t = prompt("Time", appData.schedule[i].time);
+  if(a && t){
+    appData.schedule[i].activity=a;
+    appData.schedule[i].time=t;
+    renderSchedule();
+    saveData();
+  }
+};
+
+window.editGallery = i => {
+  const s = prompt("Image URL", appData.gallery[i].src);
+  if(s){
+    appData.gallery[i].src=s;
+    renderGallery();
+    saveData();
+  }
+};
+
+window.editRank = i => {
+  const n = prompt("Name", appData.rank[i].name);
+  const p = prompt("Points", appData.rank[i].points);
+  if(n && p){
+    appData.rank[i].name=n;
+    appData.rank[i].points=parseInt(p);
+    renderRankList();
+    saveData();
+  }
+};
+
+/* =======================================================
+   ADMIN
+======================================================= */
+function loginAdmin() {
+  isAdminMode = true;
+  renderAll();
+  alert("Admin Mode Aktif");
+}
+function logoutAdmin(){
+  isAdminMode=false;
+  renderAll();
+}
+
+/* =======================================================
+   INIT
+======================================================= */
+document.addEventListener("DOMContentLoaded", ()=>{
+  loadDataFromCloud();
+});
 </script>
 </body>
 </html>
